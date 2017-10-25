@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from modelo import criar_tarefa, memdb
+from modelo import criar_tarefa, listar_tarefas, memdb
 
 app = Flask('Meu app')
 
@@ -19,3 +19,14 @@ def criar():
         'descricao': tarefa.descricao,
         'status': tarefa.status,
     }) ,201
+
+@app.route('/task', methods=['GET'])
+def listar():
+    tarefas = []
+    for tarefa in listar_tarefas():
+        tarefas.append({
+            'id': tarefa.id,
+            'titulo': tarefa.titulo,
+            'status': tarefa.status,
+        })
+    return jsonify(tarefas)
